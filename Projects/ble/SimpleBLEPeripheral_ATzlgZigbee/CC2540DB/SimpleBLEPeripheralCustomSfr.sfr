@@ -1,0 +1,20 @@
+[Sfr]
+sfr = "DPS",	"SFR",	0x92,	1,	base=16,	modified
+sfr = "T1CCTL1",	"SFR",	0xe6,	1,	base=16,	modified
+sfr = "T2EVTCFG",	"SFR",	0x9c,	1,	base=16,	modified
+sfr = "TIMIF",	"SFR",	0xd8,	1,	base=16,	modified
+sfr = "STCC",	"XData",	0x62b0,	1,	base=16,	modified
+sfr = "STCV2",	"XData",	0x62b4,	1,	base=16,	modified
+sfr = "OPAMPMC",	"XData",	0x61ad,	1,	base=16,	modified
+sfr = "CMPCTL.EN",	"XData",	0x62d0,	1,	base=16,	modified
+sfr = "SLEEPSTA.OSC32K_CALDIS",	"SFR",	0x9d,	1,	base=16,	modified
+sfr = "T1CC0L",	"SFR",	0xda,	1,	base=16,	modified
+sfr = "U0CSR.ERR",	"SFR",	0x86,	1,	base=16,	modified
+sfr = "USBPOW.SUSPEND",	"XData",	0x6201,	1,	base=16,	modified
+sfr = "USBIIF.INEP4IF",	"XData",	0x6202,	1,	base=16,	modified
+sfr = "USBOIF.OUTEP4IF",	"XData",	0x6204,	1,	base=16,	modified
+sfr = "USBCIF.RESUMEIF",	"XData",	0x6206,	1,	base=16,	modified
+
+
+[SfrGroupInfo]
+group = "Custom", "DPS", "T1CCTL1", "T2EVTCFG", "TIMIF"
