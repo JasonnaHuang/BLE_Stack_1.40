@@ -57,7 +57,7 @@ extern "C"
 // Simple BLE Peripheral Task Events
 #define SBP_START_DEVICE_EVT                              0x0001
 #define SBP_PERIODIC_EVT                                  0x0002
-#define SBP_READ_ZM516X_INFO_EVT                          0x0004
+#define ZIGBEE_READ_ZM516X_INFO_EVT                          0x0004
 
 /*********************************************************************
  * MACROS

@@ -1,6 +1,7 @@
 #include "zlgAtCmd.h"
 #include "npi.h"
-//#include "hal_gpio.h"
+#include "hal_gpio.h"
+#include "OSAL.h"
 
 #define CFG_CMD_NONVOLATILE     {0XAB,0XBC,0XCD}
 #define CFG_CMD_VOLATILE        {0XDE,0XDF,0XEF}
@@ -60,13 +61,16 @@ struct dev_info stDevInfo;
 #define UART_READ_BUF_LEN      100
 //static unsigned char wbuf[100], rbuf[100];
 
+void init_zigbee_zm516x(uint8 task_id, uint8 event)
+{
+        HalGpioSet(HAL_GPIO_ZM516X_ALL,1);
+        HalGpioSet(HAL_GPIO_ZM516X_DEF,0);
+        HalGpioSet(HAL_GPIO_ZM516X_RESET,0);
+        osal_start_timerEx( task_id, event, 100 );
+}
+
 void read_local_cfg(void)
 {
-//    int len = 0;
-
-    //gpio_init();
-//    HalGpioSet(HAL_GPIO_ZM516X_ALL,1);
-    
     wbuf[0] = 0xab;
     wbuf[1] = 0xbc;
     wbuf[2] = 0xcd;

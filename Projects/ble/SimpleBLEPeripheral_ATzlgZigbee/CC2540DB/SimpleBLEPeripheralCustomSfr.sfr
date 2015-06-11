@@ -1,20 +1,24 @@
 [Sfr]
+sfr = "TCON",	"SFR",	0x88,	1,	base=16,	modified
+sfr = "S0CON",	"SFR",	0x98,	1,	base=16,	modified
+sfr = "IRCON",	"SFR",	0xc0,	1,	base=16,	modified
+sfr = "IRCON2",	"SFR",	0xe8,	1,	base=16,	modified
+sfr = "IP1",	"SFR",	0xb9,	1,	base=16,	modified
 sfr = "DPS",	"SFR",	0x92,	1,	base=16,	modified
-sfr = "T1CCTL1",	"SFR",	0xe6,	1,	base=16,	modified
-sfr = "T2EVTCFG",	"SFR",	0x9c,	1,	base=16,	modified
-sfr = "TIMIF",	"SFR",	0xd8,	1,	base=16,	modified
+sfr = "OBSSEL3",	"XData",	0x6246,	1,	base=16,	modified
 sfr = "STCC",	"XData",	0x62b0,	1,	base=16,	modified
 sfr = "STCV2",	"XData",	0x62b4,	1,	base=16,	modified
 sfr = "OPAMPMC",	"XData",	0x61ad,	1,	base=16,	modified
-sfr = "CMPCTL.EN",	"XData",	0x62d0,	1,	base=16,	modified
-sfr = "SLEEPSTA.OSC32K_CALDIS",	"SFR",	0x9d,	1,	base=16,	modified
 sfr = "T1CC0L",	"SFR",	0xda,	1,	base=16,	modified
-sfr = "U0CSR.ERR",	"SFR",	0x86,	1,	base=16,	modified
-sfr = "USBPOW.SUSPEND",	"XData",	0x6201,	1,	base=16,	modified
-sfr = "USBIIF.INEP4IF",	"XData",	0x6202,	1,	base=16,	modified
-sfr = "USBOIF.OUTEP4IF",	"XData",	0x6204,	1,	base=16,	modified
-sfr = "USBCIF.RESUMEIF",	"XData",	0x6206,	1,	base=16,	modified
+sfr = "T1CCTL1",	"SFR",	0xe6,	1,	base=16,	modified
+sfr = "T2EVTCFG",	"SFR",	0x9c,	1,	base=16,	modified
+sfr = "TIMIF",	"SFR",	0xd8,	1,	base=16,	modified
+sfr = "OBSSEL2.EN",	"XData",	0x6245,	1,	base=16,	modified
+sfr = "U0GCR.CPOL",	"SFR",	0xc5,	1,	base=16,	modified
+sfr = "U1CSR.SLAVE",	"SFR",	0xf8,	1,	base=16,	modified
+sfr = "U1UCR.FLUSH",	"SFR",	0xfb,	1,	base=16,	modified
 
 
 [SfrGroupInfo]
-group = "Custom", "DPS", "T1CCTL1", "T2EVTCFG", "TIMIF"
+group = "Custom", "TCON", "S0CON", "IRCON", "IRCON2", "IP1", "DPS", "OBSSEL3"
+group = "Custom", "STCC", "STCV2", "OPAMPMC", "T1CC0L", "T1CCTL1", "T2EVTCFG", "TIMIF"

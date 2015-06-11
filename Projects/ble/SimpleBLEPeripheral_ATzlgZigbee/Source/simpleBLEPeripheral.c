@@ -54,6 +54,8 @@
 //user add
 #include "zlgAtCmd.h"
 #include "npi.h"
+#include "osal.h"
+#include "hal_gpio.h"
 //end user add
    
 #include "gatt.h"
@@ -467,13 +469,39 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     // return unprocessed events
     return (events ^ SYS_EVENT_MSG);
   }
+  
   //user add
-  if ( events & SBP_READ_ZM516X_INFO_EVT )
+  if ( events & ZIGBEE_READ_ZM516X_INFO_EVT )
   {
-    read_local_cfg();
-    return (events ^ SBP_READ_ZM516X_INFO_EVT);
+    static uint8 state = 0;
+    switch(state)
+    {
+    case 0:
+      init_zigbee_zm516x( task_id, ZIGBEE_READ_ZM516X_INFO_EVT );
+      state = 1;
+      break;
+    case 1:
+      HalGpioSet( HAL_GPIO_ZM516X_RESET,1 );
+      osal_start_timerEx( task_id, ZIGBEE_READ_ZM516X_INFO_EVT, 100 );
+      state = 2;
+      break;
+    case 2:
+      read_local_cfg();
+      osal_start_timerEx( task_id, ZIGBEE_READ_ZM516X_INFO_EVT, 100 );
+      state = 3;
+      break;
+    case 3:
+      UartReceiveData( task_id, ZIGBEE_READ_ZM516X_INFO_EVT );
+      state = 4;
+      break;
+    default:
+      break;
+    }
+    return (events ^ ZIGBEE_READ_ZM516X_INFO_EVT);
   }
   //end user add
+  
+  
   if ( events & SBP_START_DEVICE_EVT )
   {
     // Start the Device
@@ -486,7 +514,7 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
     
     // user add : start user event
-    osal_set_event( simpleBLEPeripheral_TaskID, SBP_READ_ZM516X_INFO_EVT );
+    osal_set_event( simpleBLEPeripheral_TaskID, ZIGBEE_READ_ZM516X_INFO_EVT );
 
     return ( events ^ SBP_START_DEVICE_EVT );
   }

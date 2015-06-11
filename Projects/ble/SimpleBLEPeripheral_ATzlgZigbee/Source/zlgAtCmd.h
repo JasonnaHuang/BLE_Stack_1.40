@@ -49,6 +49,8 @@ struct dev_info{
 };
 
 extern struct dev_info stDevInfo;
+
+void init_zigbee_zm516x(uint8 task_id, uint8 event);
 void read_local_cfg(void);
 void write_local_cfg(void);
 void send_data_to_remote_node(unsigned char *destAddr,unsigned char *data,int len);
