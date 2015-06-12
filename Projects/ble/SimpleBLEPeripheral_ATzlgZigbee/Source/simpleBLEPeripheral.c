@@ -150,7 +150,8 @@
 /*********************************************************************
  * LOCAL VARIABLES
  */
-static uint8 simpleBLEPeripheral_TaskID;   // Task ID for internal task/event processing
+//static //user modify 
+uint8 simpleBLEPeripheral_TaskID;   // Task ID for internal task/event processing
 
 static gaprole_States_t gapProfileState = GAPROLE_INIT;
 
@@ -280,10 +281,6 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 {
   simpleBLEPeripheral_TaskID = task_id;
 
-  // User add
-  {
-    NPI_InitTransport(UartReceiveData);
-  }
   // Setup the GAP
   VOID GAP_SetParamValue( TGAP_CONN_PAUSE_PERIPHERAL, DEFAULT_CONN_PAUSE_PERIPHERAL );
   
@@ -476,28 +473,61 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     static uint8 state = 0;
     switch(state)
     {
-    case 0:
+    case 0:     
       init_zigbee_zm516x( task_id, ZIGBEE_READ_ZM516X_INFO_EVT );
       state = 1;
       break;
     case 1:
+      HalGpioSet(HAL_GPIO_ZM516X_ALL,1); 
       HalGpioSet( HAL_GPIO_ZM516X_RESET,1 );
       osal_start_timerEx( task_id, ZIGBEE_READ_ZM516X_INFO_EVT, 100 );
       state = 2;
       break;
     case 2:
+      HalGpioSet(HAL_GPIO_ZM516X_ALL,1); 
       read_local_cfg();
-      osal_start_timerEx( task_id, ZIGBEE_READ_ZM516X_INFO_EVT, 100 );
       state = 3;
       break;
     case 3:
       UartReceiveData( task_id, ZIGBEE_READ_ZM516X_INFO_EVT );
-      state = 4;
+      state = 2;
+      osal_start_timerEx( task_id, ZIGBEE_READ_ZM516X_INFO_EVT, 100 );
       break;
     default:
       break;
     }
     return (events ^ ZIGBEE_READ_ZM516X_INFO_EVT);
+  }
+  
+  if ( events & UART_RECEIVE_EVT )
+  {
+    static unsigned char lenold = 0;
+    unsigned char len = 0;
+    //; NPI_ReadTransport(buf,len);
+    if((len = NPI_RxBufLen()) > 0)
+    {
+      if(lenold == len)
+      {
+        osal_set_event( task_id, ZIGBEE_READ_ZM516X_INFO_EVT );
+        lenold = 0;
+      }
+      else
+      {
+        lenold = len;
+        osal_stop_timerEx( task_id, UART_RECEIVE_EVT );
+        osal_start_timerEx( task_id, UART_RECEIVE_EVT, 3 );
+      }
+      return ( events ^ UART_RECEIVE_EVT );
+    }
+    else
+    {
+      //if(lenold > 0)
+      //osal_set_event( task_id, SBP_READ_ZM516X_INFO_EVT );
+      //lenold = len;
+      //osal_start_timerEx( task_id, UART_RECEIVE_EVT, 10 );
+      //osal_set_event( task_id, SBP_READ_ZM516X_INFO_EVT );
+      return ( events ^ UART_RECEIVE_EVT );
+    }
   }
   //end user add
   

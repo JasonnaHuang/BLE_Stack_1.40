@@ -8,58 +8,13 @@
 
 #include "bcomdef.h"
 
-const unsigned char broadcastAddr[2] = {0xff,0xff};
-static unsigned char wbuf[255],rbuf[255];
-
-/*enum nvparamoptcmd{
-    enReadLoacalCfg = 0xd1,
-    enSetChannelNv = 0xd2,
-    enSearchNode = 0xd4,
-    enGetRemoteInfo = 0xd5,
-    enModifyCfg = 0xd6,
-    enResetNode = 0xd9,
-    enResetCfg = 0xda
-};
-
-
-enum temporaryparamoptcmd{
-    enSetChannel = 0xd1,
-    enSetDestAddr = 0xd2,
-    enShowSrcAddr = 0xd3,
-    enSetIoDirection = 0xd4,
-    enReadIoStatus = 0xd5,
-    enSetIoStatus = 0xd6,
-    enReadAdcValue = 0xd7,
-    enEnterSleepMode = 0xd8,
-    enSetUnicastOrBroadcast = 0xd9,
-    enReadNodeRssi = 0xda
-};*/
-
-/*struct dev_info{
-    unsigned char devName[16];
-    unsigned char devPwd[16];
-    unsigned char devMode;
-    unsigned char devChannel;
-    unsigned char devPanid[2];
-    unsigned char devLoacalNetAddr[2];
-    unsigned char devLoacalIEEEAddr[8];
-    unsigned char devDestNetAddr[2];
-    unsigned char devDestIEEEAddr[8];
-    unsigned char devReserve1;
-    unsigned char devPowerLevel;
-    unsigned char devRetryNum;
-    unsigned char devTranTimeout;       // *10ms
-    unsigned char devSerialRate;
-    unsigned char devSerialDataB;
-    unsigned char devSerialStopB;
-    unsigned char devSerialParityB;
-    unsigned char devReserve2;
-};*/
-
-struct dev_info stDevInfo;
 #define UART_WRITE_BUF_LEN      100
 #define UART_READ_BUF_LEN      100
-//static unsigned char wbuf[100], rbuf[100];
+
+const unsigned char broadcastAddr[2] = {0xff,0xff};
+static unsigned char wbuf[UART_WRITE_BUF_LEN],rbuf[UART_READ_BUF_LEN];
+
+struct dev_info stDevInfo;
 
 void init_zigbee_zm516x(uint8 task_id, uint8 event)
 {
@@ -162,23 +117,21 @@ void send_data_to_remote_node(unsigned char *destAddr,unsigned char *data,int le
 void UartReceiveData(uint8 port, uint8 event)
 {
     VOID    port;
-    uint8 temp;
+    uint8   len;
 /*
-    if(event & HAL_UART_RX_TIMEOUT)    //接收完成事件
+    if(event & UART_RECEIVE_EVT)    //接收完成事件
     {
-        temp = NPI_RxBufLen();
-        if(temp)
+        len = NPI_RxBufLen();
+        osal_memset(rbuf,0,UART_READ_BUF_LEN);
+        if(len)
         {
-            NPI_ReadTransport(uartbuf, temp);
-            NPI_WriteTransport(uartbuf, temp);
-            osal_memset(uartbuf, 0, sizeof(uartbuf));
+            NPI_ReadTransport(rbuf, len);
         }
     }*/
-    
-    VOID  event;
-    temp = NPI_RxBufLen();
-    if(temp)
+    len = NPI_RxBufLen();
+    osal_memset(rbuf,0,UART_READ_BUF_LEN);
+    if(len)
     {
-        NPI_ReadTransport(rbuf, temp);
+        NPI_ReadTransport(rbuf, len);
     }
 }

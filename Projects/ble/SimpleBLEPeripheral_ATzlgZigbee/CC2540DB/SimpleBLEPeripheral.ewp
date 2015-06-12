@@ -1535,6 +1535,7 @@
           <state>$PROJ_DIR$\..\..\Profiles\Roles</state>
           <state>$PROJ_DIR$\..\..\Profiles\SimpleProfile</state>
           <state>$PROJ_DIR$\..\..\Profiles\DevInfo</state>
+          <state>$PROJ_DIR$\..\Source</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
